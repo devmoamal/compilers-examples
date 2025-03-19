@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compiler Concepts</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Compiler Concepts</h1>
+            <p class="subtitle">Examples of different compiler phases implementation</p>
+        </header>
+
+        <div class="code-section">
+            <div class="code-header">
+                <h2 class="code-title">Optimization</h2>
+                <button class="copy-btn" onclick="copyCode('optimize-code')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                    Copy
+                </button>
+            </div>
+            <div class="code-content">
+                <pre><code id="optimize-code">public static void main(String[] args) {
+    String lang = "a + b + a + b";
+    String Optimize = Optimizer(lang);
+    System.out.println("Optimize : " + Optimize);
+}
+
+public static String Optimizer(String lang){
+    return lang.replaceAll("a \\+ b \\+ a \\+ b", "2 * (a + b)");
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="code-section">
+            <div class="code-header">
+                <h2 class="code-title">Syntax Analysis</h2>
+                <button class="copy-btn" onclick="copyCode('syntax-code')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                    Copy
+                </button>
+            </div>
+            <div class="code-content">
+                <pre><code id="syntax-code">import java.util.*;
+
+public static void main(String[] args) {
+    List&lt;String&gt; tokens = Arrays.asList("int", "a", "=", "10", ";");
+    parse(tokens);
+}
+
+public static void parse(List&lt;String&gt; tokens){
+    if (tokens.size() == 5
+        && tokens.get(0).equals("int")
+        && isIdentifier(tokens.get(1))
+        && tokens.get(2).equals("=")
+        && isInteger(tokens.get(3))
+        && tokens.get(4).equals(";")
+        ){
+        System.out.println("Syntax analysis passed: Variable declaration is valid!");
+    }else{
+        System.out.println("Syntax Error: Invalid variable declaration");
+    }
+}
+
+public static boolean isIdentifier(String token){
+    return token.matches("[a-zA-Z_][a-zA-Z0-9_]*");
+}
+
+public static boolean isInteger(String value) {
+    return value.matches("\\d+");
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="code-section">
+            <div class="code-header">
+                <h2 class="code-title">Semantic Analysis</h2>
+                <button class="copy-btn" onclick="copyCode('semantic-code')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                    Copy
+                </button>
+            </div>
+            <div class="code-content">
+                <pre><code id="semantic-code">public static void main(String[] args) {
+    String varType = "int";
+    String varName = "a";
+    String varValue = "5";   
+
+    analyze(varType, varName, varValue);
+}
+
+public static void analyze(String varType, String varName, String varValue){
+    if (varType.equals("int") && !isInteger(varValue)){
+        System.out.println("Semantic Error: Value is not an integer");
+    }else{
+        System.out.println("Semantic analyis passed: Variable " + varName + " Vaild!");
+    }
+}
+
+public static boolean isInteger(String value) {
+    try { 
+        Integer.parseInt(value); 
+        return true;
+    } catch(NumberFormatException e) {
+        return false;
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="code-section">
+            <div class="code-header">
+                <h2 class="code-title">Lexical Analysis</h2>
+                <button class="copy-btn" onclick="copyCode('lexical-code')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                    Copy
+                </button>
+            </div>
+            <div class="code-content">
+                <pre><code id="lexical-code">import java.util.regex.*;
+import java.util.*;
+
+public static void main(String[] args) {
+    String sourceCode = "int a = 10;"; 
+    tokenize(sourceCode); 
+}
+
+public static void tokenize(String sourceCode) { 
+    String[] tokenPatterns = { "int", "if", "else", "\\d+", "[a-zA-Z][a-zA-Z0-9]*", "=", ";", "\\+|\\-"}; 
+    List&lt;String&gt; tokens = new ArrayList<>(); 
+    for (String i : tokenPatterns){ 
+        Pattern p = Pattern.compile(i);
+        Matcher m = p.matcher(sourceCode);
+        while (m.find()) { 
+            tokens.add(m.group()); 
+        } 
+        System.out.println("Tokens: " + tokens);
+    }
+}</code></pre>
+            </div>
+        </div>
+    </div>
+
+    <div id="success-message" class="success-message">Code copied to clipboard!</div>
+    <script src="assets/js/script.js"></script>
+</body>
+</html>
